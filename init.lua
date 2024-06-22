@@ -238,9 +238,37 @@ require('lazy').setup({
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
-      require("nvim-tree").setup {}
+      local function my_on_attach(bufnr)
+        local api = require "nvim-tree.api"
+
+        local function opts(desc)
+          return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+        end
+
+        -- default mappings
+        api.config.mappings.default_on_attach(bufnr)
+
+        -- custom mappings
+        vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent,        opts('Up'))
+        vim.keymap.set('n', '?',     api.tree.toggle_help,                  opts('Help'))
+        -- vim.keymap.set('n', '<Cq>', api.tree.open)
+      end
+
+      -- pass to setup along with your other options
+      require("nvim-tree").setup {
+        on_attach = my_on_attach,
+      }
     end,
   },
+  
+  -- My New plugins
+  {
+    "akinsho/toggleterm.nvim",
+    version = "*",
+    config = true
+  },
+  
+
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -297,6 +325,8 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
+vim.o.ruler = true
+
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
@@ -312,6 +342,7 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous dia
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -535,10 +566,10 @@ require('mason-lspconfig').setup()
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  -- clangd = {},
+  clangd = {},
   -- gopls = {},
   -- pyright = {},
-  -- rust_analyzer = {},
+  rust_analyzer = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
@@ -624,6 +655,9 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
   },
+ 
+  -- [[ Configure toggleterm ]]
+  require("toggleterm").setup{}
 }
 
 
