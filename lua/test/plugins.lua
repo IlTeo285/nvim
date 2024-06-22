@@ -17,7 +17,15 @@ return require("packer").startup(function(use)
 
     --Colorschema
     use("rebelot/kanagawa.nvim")
-    
+
+    --Useful plugin to show you pending keybinds
+    use({
+      "folke/which-key.nvim",
+      config = function()
+                require("test.configs.which-key")
+      end,
+    })
+
     --StatusLine
     use({
 		    "nvim-lualine/lualine.nvim",
@@ -50,27 +58,23 @@ return require("packer").startup(function(use)
 		    requires = { { "nvim-lua/plenary.nvim" } },
 	  })
 	
-    -- cmp: Autocomplete
-	  use({
-		  "hrsh7th/nvim-cmp",
-		  event = "InsertEnter",
-		  config = function()
-			      require("test.configs.cmp")
-		  end,
-	  })
+  -- autocompletion
+  use("hrsh7th/nvim-cmp") -- completion plugin
+  use("hrsh7th/cmp-buffer") -- source for text in buffer
+  use("hrsh7th/cmp-path") -- source for file system paths
 
-	  use("hrsh7th/cmp-nvim-lsp")
+  -- snippets
+  use("L3MON4D3/LuaSnip") -- snippet engine
+  use("saadparwaiz1/cmp_luasnip") -- for autocompletion
+  use("rafamadriz/friendly-snippets") -- useful snippets
 
-	  use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
+  -- bar
+  use 'lewis6991/gitsigns.nvim' -- OPTIONAL: for git status
+  use 'romgrk/barbar.nvim'
 
-	  use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
-  	
     -- LSP
 	  use({
 		    "neovim/nvim-lspconfig",
-		    config = function()
-			      require("test.configs.lsp")
-		    end,
 	  })
     
     use("onsails/lspkind-nvim")
@@ -129,12 +133,9 @@ return require("packer").startup(function(use)
 	  })
 
     -- Git
-	  use({
-		    "lewis6991/gitsigns.nvim",
-		    config = function()
-			            require("test.configs.gitsigns")
-		            end,
-	  })
+	  --use({
+		--    "lewis6991/gitsigns.nvim"
+	  --})
 
     -- Markdown Preview
     use({
