@@ -233,9 +233,11 @@ require('lazy').setup({
       'nvim-tree/nvim-web-devicons',
     },
     config = function()
-      require('nvim-tree').setup {
-        vim.keymap.set('n', '<leader>t', ':NvimTreeFocus<CR>', { desc = '[T]oggle Tree' }),
-      }
+      require('nvim-tree').setup {}
+
+      local map = vim.api.nvim_set_keymap
+      local opts = { noremap = true, silent = true }
+      map('n', '<A-t>', '<Cmd>NvimTreeToggle<CR>', opts)
     end,
   },
 
