@@ -505,6 +505,7 @@ require('lazy').setup({
       -- used for completion, annotations and signatures of Neovim apis
       { 'folke/neodev.nvim', opts = {} },
     },
+    inlay_hints = { enable = true },
     config = function()
       -- Brief aside: **What is LSP?**
       --
@@ -588,6 +589,15 @@ require('lazy').setup({
           --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
+          local toogle_hint = function()
+            if vim.lsp.inlay_hint.is_enabled() then
+              return vim.lsp.inlay_hint.enable(false)
+            else
+              return vim.lsp.inlay_hint.enable(true)
+            end
+          end
+          map('<leader>h', toogle_hint, 'Toogle Inlay Hint')
+
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
           --    See `:help CursorHold` for information about when this is executed
@@ -668,6 +678,7 @@ require('lazy').setup({
               completion = {
                 callSnippet = 'Replace',
               },
+              hint = { enable = true },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
               -- diagnostics = { disable = { 'missing-fields' } },
             },
