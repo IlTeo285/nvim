@@ -387,17 +387,31 @@ require('lazy').setup({
       end
 
       ins_left {
-        function()
-          return '▊'
-        end,
-        color = { fg = colors.blue }, -- Sets highlighting of component
-        padding = { left = 0, right = 1 }, -- We don't need space before this
-      }
-
-      ins_left {
         -- mode component
         function()
-          return ''
+          local mode_text = {
+            n = 'NORMAL',
+            i = 'INSERT',
+            v = 'VISUAL',
+            [''] = 'VISUAL',
+            V = 'VISUAL',
+            c = 'COMMAND',
+            no = 'NORMAL',
+            s = 's',
+            S = 'S',
+            [''] = 'S',
+            ic = 'ic',
+            R = 'R',
+            Rv = 'Rv',
+            cv = 'NORMAL',
+            ce = 'NORMAL',
+            r = 'r',
+            rm = 'rm',
+            ['r?'] = 'r?',
+            ['!'] = 'NORMAL',
+            t = 'NORMAL',
+          }
+          return mode_text[vim.fn.mode()]
         end,
         color = function()
           -- auto change color according to neovims mode
@@ -423,9 +437,9 @@ require('lazy').setup({
             ['!'] = colors.red,
             t = colors.red,
           }
-          return { fg = mode_color[vim.fn.mode()] }
+          return { bg = mode_color[vim.fn.mode()] }
         end,
-        padding = { right = 1 },
+        padding = { right = 2, left = 2 },
       }
 
       ins_left {
