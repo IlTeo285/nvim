@@ -22,4 +22,18 @@ return {
       },
     },
   },
+  init = function(_, opts)
+    require('neo-tree').setup(opts)
+
+    -- Apri Neo-tree automaticamente all'avvio e rivela il file corrente se esiste
+    vim.api.nvim_create_autocmd('VimEnter', {
+      callback = function()
+        if vim.fn.argc() == 0 then
+          vim.cmd 'Neotree show'
+        else
+          vim.cmd 'Neotree reveal'
+        end
+      end,
+    })
+  end,
 }
