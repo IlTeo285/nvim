@@ -22,18 +22,17 @@ return {
       },
     },
   },
-  init = function(_, opts)
-    require('neo-tree').setup(opts)
+  init = function()
+    local map = vim.keymap.set
+    local set = vim.opt
 
-    -- Apri Neo-tree automaticamente all'avvio e rivela il file corrente se esiste
+    local opts = { noremap = true, silent = true, desc = '[G]it [S]status' }
+    map('n', '<leader>gs', '<Cmd>Neotree float git_status<CR>', opts)
     vim.api.nvim_create_autocmd('VimEnter', {
-      callback = function()
-        if vim.fn.argc() == 0 then
-          vim.cmd 'Neotree show'
-        else
-          vim.cmd 'Neotree reveal'
-        end
-      end,
+      command = 'set nornu nonu | Neotree toggle',
+    })
+    vim.api.nvim_create_autocmd('BufEnter', {
+      command = 'set rnu nu',
     })
   end,
 }
